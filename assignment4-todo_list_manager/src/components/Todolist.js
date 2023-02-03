@@ -64,6 +64,8 @@ const List = () => {
             return index !== elem.id;
         });
         setItems(itemToDelete);
+        setInputData('');
+        setIsSubmit(true);
         alert(`Item deleted with index ${index}`);
     }
 
@@ -77,6 +79,29 @@ const List = () => {
         //passing current id to state variable
         setIsEditing(id);
         inputRef.current.focus();
+    }
+    //remove all items
+    const removeAllItems = () => {
+        setItems([]);
+    }
+    //on btn click save data to local storage
+    const saveList = () => {
+        //save data to Local Storage
+        localStorage.setItem('toToItems', JSON.stringify(items));
+        console.log(localStorage);
+        alert('saved list to localStorage');
+    }
+    //on btn click load data from local storage
+    const loadList = () => {
+        let oldList = localStorage.getItem('toToItems');
+        if (oldList) {
+            const temp = JSON.parse(localStorage.getItem('toToItems'));
+            setItems([...items, ...temp]);
+            console.log(temp);
+            alert('getting list from localStorage')
+        } else {
+            return [];
+        }
     }
     return (
         <div className='wmg-container'>
@@ -95,7 +120,7 @@ const List = () => {
                         ?
                         <button onClick={addItem} className='add-item-btn form-btn' type='button'>Add</button>
                         :
-                        <button onClick={addItem} className='add-item-btn form-btn' type='button'>Edit</button>
+                        <button onClick={addItem} className='edit-item-btn form-btn' type='button'>Edit</button>
                     }
                     {/* <input type="submit" value="Submit" /> */}
                 </form>
@@ -120,9 +145,14 @@ const List = () => {
                     })}
                 </div>
                 <div className='delete-all'>
-                    <button className='delete-all-btn'>Delete All</button>
+                    <button className='delete-all-btn' onClick={removeAllItems}>Delete All</button>
+                </div>
+                <div className='dynamic-btns'>
+                    <button onClick={loadList} className='load-data-btn load'>Load List</button>
+                    <button onClick={saveList} className='load-data-btn save'>Save All</button>
                 </div>
             </div>
+
         </div>
     )
 }
