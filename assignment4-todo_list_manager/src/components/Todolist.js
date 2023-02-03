@@ -1,8 +1,83 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import headerImage from '../img/headerImage.jpg'
 
 
-const list = () => {
+const List = () => {
+    const [inputData, setInputData] = useState('');
+    const [items, setItems] = useState([]);
+
+    //create boolean flag for toggling the submit
+    const [isSubmit, setIsSubmit] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+    //to adjust focus on input
+    const inputRef = useRef(null);
+    const createCurretDate = () => {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1;
+        let dd = today.getDate();
+        // let time = today.getTime();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        const formattedToday = `${dd} / ${mm} / ${yyyy}`;
+        return formattedToday;
+    }
+    // add the Item to the list
+    const addItem = () => {
+        if (!inputData) {
+            alert('insert text')
+        }
+        //if item editing is active
+        else if (inputData && !isSubmit) {
+            //get ele and edit its name
+            const tempItem = items.map((ele) => {
+                if (ele.id === isEditing) {
+                    return { ...ele, name: inputData, date: createCurretDate() }
+                }
+                return ele;
+            });
+            setItems(tempItem)
+
+            setIsSubmit(true);
+            setInputData(``);
+            setIsEditing(false);
+            alert('item edited');
+        }
+        else if (inputData) {
+            const dataToAdd = {
+                id: new Date().getTime().toString(),
+                name: inputData,
+                date: createCurretDate(),
+            };
+            setItems([...items, dataToAdd]);
+            setInputData('');
+            // console.log(items);
+            // alert('item added')
+        }
+        else {
+            alert('insert text')
+        }
+    };
+    // delete the items
+    const deleteCurrentItem = (index) => {
+        const itemToDelete = items.filter((elem) => {
+            return index !== elem.id;
+        });
+        setItems(itemToDelete);
+        alert(`Item deleted with index ${index}`);
+    }
+
+    //edit the current item
+    const editCurrentItem = (id) => {
+        let newEditItem = items.find((e) => {
+            return e.id === id
+        });
+        setInputData(newEditItem.name);
+        setIsSubmit(false);
+        //passing current id to state variable
+        setIsEditing(id);
+        inputRef.current.focus();
+    }
     return (
         <div className='wmg-container'>
             <div className='list-wrapper'>
@@ -15,80 +90,34 @@ const list = () => {
                     </h1>
                 </div>
                 <form className='todo-form'>
-                    <input type="text" value="" placeholder='Enter to do item' />
-                    <button className='add-item-btn form-btn' type='button'>Add</button>
+                    <input type="text" value={inputData} ref={inputRef} placeholder='Enter to do item' onChange={(e) => setInputData(e.target.value)} />
+                    {isSubmit
+                        ?
+                        <button onClick={addItem} className='add-item-btn form-btn' type='button'>Add</button>
+                        :
+                        <button onClick={addItem} className='add-item-btn form-btn' type='button'>Edit</button>
+                    }
+                    {/* <input type="submit" value="Submit" /> */}
                 </form>
                 <div className='list-container'>
-                    <div className='list-item'>
-                        <div>
-                            <h2 className='listItem-text'> Item 1</h2>
-                            <p className='listItem-date'>time1</p>
-                        </div>
-                        <div>
-                            <svg className='delete-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            <svg className='edit-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div className='list-item'>
-                        <div>
-                            <h2 className='listItem-text'> Item 2</h2>
-                            <p className='listItem-date'>time2</p>
-                        </div>
-                        <div>
-                            <svg className='delete-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            <svg className='edit-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div className='list-item'>
-                        <div>
-                            <h2 className='listItem-text'> Item 3</h2>
-                            <p className='listItem-date'>time3</p>
-                        </div>
-                        <div>
-                            <svg className='delete-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            <svg className='edit-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div className='list-item'>
-                        <div>
-                            <h2 className='listItem-text'> Item 4</h2>
-                            <p className='listItem-date'>time4</p>
-                        </div>
-                        <div>
-                            <svg className='delete-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            <svg className='edit-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div className='list-item'>
-                        <div>
-                            <h2 className='listItem-text'> Item 5</h2>
-                            <p className='listItem-date'>time5</p>
-                        </div>
-                        <div>
-                            <svg className='delete-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            <svg className='edit-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </div>
-                    </div>
+                    {items.map((ele) => {
+                        return (
+                            <div className='list-item' key={ele.id}>
+                                <div>
+                                    <h2 className='listItem-text'> {ele.name}</h2>
+                                    <p className='listItem-date'>{ele.date}</p>
+                                </div>
+                                <div>
+                                    <svg onClick={() => deleteCurrentItem(ele.id)} className='delete-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                    <svg onClick={() => editCurrentItem(ele.id)} className='edit-btn svg-btn' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                    </svg>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
                 <div className='delete-all'>
                     <button className='delete-all-btn'>Delete All</button>
@@ -98,4 +127,4 @@ const list = () => {
     )
 }
 
-export default list
+export default List
