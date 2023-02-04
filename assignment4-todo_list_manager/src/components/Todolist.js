@@ -11,6 +11,8 @@ const List = () => {
     const [inputData, setInputData] = useState('');
     const [items, setItems] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [savedItems, setSavedItems] = useState([]);
+
 
     //create boolean flag for toggling the submit
     const [isSubmit, setIsSubmit] = useState(true);
@@ -36,13 +38,36 @@ const List = () => {
         //if item editing is active
         else if (inputData && !isSubmit) {
             //get ele and edit its name
-            const tempItem = items.map((ele) => {
-                if (ele.id === isEditing) {
-                    return { ...ele, name: inputData, date: createCurretDate() }
-                }
-                return ele;
-            });
-            setItems(tempItem)
+            // const tempItem = items.map((ele) => {
+            //     if (ele.id === isEditing) {
+            //         return { ...ele, name: inputData, date: createCurretDate() }
+            //     }
+            //     return ele;
+            // });
+            console.log('0st if');
+            const tempItem = items.find(ele => isEditing == ele.id);
+            if (!tempItem) {
+                const tempItem1 = savedItems.map((ele) => {
+                    if (ele.id === isEditing) {
+                        return { ...ele, name: inputData, date: createCurretDate() }
+                    }
+                    return ele;
+                });
+
+                setSavedItems(tempItem1);
+                console.log('1st if');
+            }
+            else {
+                const tempItem2 = items.map((ele) => {
+                    if (ele.id === isEditing) {
+                        return { ...ele, name: inputData, date: createCurretDate() }
+                    }
+                    return ele;
+                });
+                setItems(tempItem2);
+                console.log('2st else');
+            }
+
 
             setIsSubmit(true);
             setInputData(``);
@@ -69,10 +94,18 @@ const List = () => {
         const itemToDelete = items.filter((elem) => {
             return index !== elem.id;
         });
-        setItems(itemToDelete);
+        if (itemToDelete.length === items.length) {
+            const deleteOne = savedItems.filter((elem) => {
+                return index !== elem.id;
+            });
+            setSavedItems(deleteOne)
+        }
+        else {
+            setItems(itemToDelete);
+        }
         setInputData('');
         setIsSubmit(true);
-        alert(`Item deleted with index ${index}`);
+        alert(`Item deleted with id ${index}`);
     }
 
     //edit the current item
@@ -80,7 +113,17 @@ const List = () => {
         let newEditItem = items.find((e) => {
             return e.id === id
         });
-        setInputData(newEditItem.name);
+        if (!newEditItem) {
+            const findOne = savedItems.find((elem) => {
+                return id == elem.id;
+            });
+            setInputData(findOne.name);
+        }
+        else {
+            setInputData(newEditItem.name);
+        }
+
+        // setInputData(newEditItem.name);
         setIsSubmit(false);
         //passing current id to state variable
         setIsEditing(id);
@@ -89,6 +132,7 @@ const List = () => {
     //remove all items
     const removeAllItems = () => {
         setItems([]);
+        setSavedItems([]);
     }
 
 
@@ -100,22 +144,23 @@ const List = () => {
         // console.log(localStorage);
         // alert('saved list to localStorage');
         if (loaded) {
-            set(ref(db, 'list'), items);
+            set(ref(db, 'list'), [...savedItems, ...items]);
+            setSavedItems([...savedItems, ...items]);
+            setItems([]);
         }
         else {
             const refData = ref(db, 'list');
+            let data = [];
             onValue(refData, (snapshot) => {
-                const data = snapshot.val();
-                set(ref(db, 'list'), [...data, ...items]);
+                data = snapshot.val();
+                // console.log('saved data', data);
+                // console.log('saved items', savedItems);
             })
+            set(ref(db, 'list'), [...data, ...items]);
 
         }
         alert('stored in database');
-
-
     }
-
-
     //on btn click load data from local storage
     const loadList = () => {
         // let oldList = localStorage.getItem('toToItems');
@@ -131,10 +176,10 @@ const List = () => {
         const refData = ref(db, 'list');
         onValue(refData, (snapshot) => {
             const data = snapshot.val();
-            console.log(data);
-            setItems([...items, ...data]);
+            setSavedItems(data);
+            // console.log(data);
             setLoaded(true);
-        })
+        });
 
     }
     return (
@@ -159,7 +204,8 @@ const List = () => {
                     {/* <input type="submit" value="Submit" /> */}
                 </form>
                 <div className='list-container'>
-                    {items.map((ele) => {
+                    {[...savedItems, ...items].map((ele) => {
+
                         return (
                             <div className='list-item' key={ele.id}>
                                 <div>
