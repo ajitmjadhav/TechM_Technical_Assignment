@@ -1,10 +1,16 @@
 import React, { useState, useRef } from 'react'
 import headerImage from '../img/headerImage.jpg'
+import app from '../firebase/connection'
+import { getDatabase, ref, set, onValue } from 'firebase/database'
+
+//instance
+const db = getDatabase(app);
 
 
 const List = () => {
     const [inputData, setInputData] = useState('');
     const [items, setItems] = useState([]);
+    const [loaded, setLoaded] = useState(false);
 
     //create boolean flag for toggling the submit
     const [isSubmit, setIsSubmit] = useState(true);
@@ -84,24 +90,52 @@ const List = () => {
     const removeAllItems = () => {
         setItems([]);
     }
+
+
+
     //on btn click save data to local storage
     const saveList = () => {
         //save data to Local Storage
-        localStorage.setItem('toToItems', JSON.stringify(items));
-        console.log(localStorage);
-        alert('saved list to localStorage');
+        // localStorage.setItem('toToItems', JSON.stringify(items));
+        // console.log(localStorage);
+        // alert('saved list to localStorage');
+        if (loaded) {
+            set(ref(db, 'list'), items);
+        }
+        else {
+            const refData = ref(db, 'list');
+            onValue(refData, (snapshot) => {
+                const data = snapshot.val();
+                set(ref(db, 'list'), [...data, ...items]);
+            })
+
+        }
+        alert('stored in database');
+
+
     }
+
+
     //on btn click load data from local storage
     const loadList = () => {
-        let oldList = localStorage.getItem('toToItems');
-        if (oldList) {
-            const temp = JSON.parse(localStorage.getItem('toToItems'));
-            setItems([...items, ...temp]);
-            console.log(temp);
-            alert('getting list from localStorage')
-        } else {
-            return [];
-        }
+        // let oldList = localStorage.getItem('toToItems');
+        // if (oldList) {
+        //     const temp = JSON.parse(localStorage.getItem('toToItems'));
+        //     setItems([...items, ...temp]);
+        //     console.log(temp);
+        //     alert('getting list from localStorage')
+        // } else {
+        //     return [];
+        // }
+
+        const refData = ref(db, 'list');
+        onValue(refData, (snapshot) => {
+            const data = snapshot.val();
+            console.log(data);
+            setItems([...items, ...data]);
+            setLoaded(true);
+        })
+
     }
     return (
         <div className='wmg-container'>
