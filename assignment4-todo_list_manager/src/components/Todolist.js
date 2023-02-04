@@ -189,11 +189,18 @@ const List = () => {
         const refData = ref(db, 'list');
         onValue(refData, (snapshot) => {
             const data = snapshot.val();
-            setSavedItems(data);
             // console.log(data);
             setLoaded(true);
+            if (data) {
+                setSavedItems(data);
+                toast.success('Data is loaded from firebase');
+            }
+            else {
+                setSavedItems([]);
+                toast.error('Empty database');
+            }
         });
-        toast.success('Data is loaded from firebase');
+
     }
 
     return (
