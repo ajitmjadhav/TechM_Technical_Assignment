@@ -147,8 +147,6 @@ const List = () => {
         setSavedItems([]);
     }
 
-
-
     //on btn click save data to local storage
     const saveList = () => {
         //save data to Local Storage
