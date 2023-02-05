@@ -37,8 +37,3 @@ li {
 *:hover {
   transition: all 0.3s;
 }
-.wmg-container {
-  max-width: 1360px;
-  margin: 0 auto;
-  position: relative;
-}

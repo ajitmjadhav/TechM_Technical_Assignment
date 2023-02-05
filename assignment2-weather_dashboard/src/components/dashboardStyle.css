@@ -1,0 +1,130 @@
+.wmg-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  position: relative;
+}
+.Navbar {
+  padding: 15px 20px;
+  background-color: beige;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(125, 125, 232, 0.61);
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+.nav-left > * {
+  margin: 0 10px;
+}
+.heading-primary {
+  font-size: 20px;
+  color: #000;
+  line-height: 1.2;
+  letter-spacing: 0.8px;
+}
+.nav-select {
+  font-size: 20px;
+  color: #000000;
+  padding: 8px 16px;
+  border: 2px solid black;
+  border-radius: 8px;
+  min-width: 180px;
+  cursor: pointer;
+  user-select: none;
+}
+.wmg-btn {
+  color: #fff;
+  font-weight: 700;
+  border: 1px solid orangered;
+  font-size: 20px;
+  min-width: 100px;
+  padding: 8px 16px;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(245, 169, 142),
+    rgb(251, 77, 14)
+  );
+  border-radius: 8px;
+}
+
+.card-wrapper {
+  padding: 40px;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  justify-content: space-evenly;
+}
+.card {
+  padding: 30px;
+  background-color: rgb(250, 205, 255);
+  border-radius: 40px;
+  box-shadow: 1px 1px 6px 3px #7f7f7f;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(140, 51, 224);
+}
+.svg-icons svg {
+  width: 25px;
+  height: 25px;
+  fill: rgb(244, 146, 146);
+}
+.heading-sec {
+  font-size: 18px;
+  color: #000;
+  line-height: 1.2;
+  letter-spacing: 0.8px;
+}
+
+.icon-image {
+  width: 60px;
+  height: 60px;
+}
+.icon-text {
+  text-align: center;
+}
+.icon-image img {
+  border-radius: 10px;
+}
+.card-mid div:first-child {
+  align-items: flex-end;
+}
+.icon-with-detail {
+  margin: 10px 10px;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.temp-wrapper {
+  text-align: center;
+}
+.temperature {
+  font-size: 60px;
+  font-weight: 600;
+  color: orangered;
+  line-height: 1;
+}
+.temperature span {
+  font-size: 40px;
+}
+.feels {
+  font-size: 16px;
+}
+.card-footer {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+.dynamic-btn {
+  position: fixed;
+  right: 20px;
+  margin-top: -50px;
+}
