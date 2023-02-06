@@ -6,6 +6,7 @@ import raintW from '../images/rainyWeather.jpg'
 import sunnyW from '../images/sunnyWeather.jpg'
 import coludyW from '../images/cloudyWeather.jpg'
 import { cityList } from './cityList.js'
+import CurrentCard from './currentCard'
 //react-toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,6 +15,8 @@ const Dashboard = () => {
     const [city, setCity] = useState('');
     const [currentObj, setCurrentObj] = useState([]);
     const [allObj, setAllObj] = useState([]);
+    const [currentFlag, setCurrentFlag] = useState(false);
+
     //function for getting city name from select field
     const handleChange = (e) => {
         const val = e.target.value;
@@ -26,15 +29,17 @@ const Dashboard = () => {
             const response = await fetch(url);
             const res = await response.json();
             setCurrentObj(res);
-            console.log(res);
+            // console.log(res);
             // alert('we get the data')
             toast.success('Data got from API');
+            setCurrentFlag(true)
         }
         else {
             toast.error('please select a city');
         }
     }
     const saveAllData = () => {
+        setCurrentFlag(false)
         const temp = allObj.find((obj) => obj.name === currentObj.name)
         if (temp) {
             toast.error('already saved this city');
@@ -78,7 +83,7 @@ const Dashboard = () => {
                         <button className='wmg-btn'>Reload</button>
                     </div>
                 </div>
-                { }
+                {currentFlag && <CurrentCard myData={currentObj} />}
                 <div className='card-wrapper'>
                     <div className='cards-grid'>
                         {allObj && allObj.map((item, key) => {
