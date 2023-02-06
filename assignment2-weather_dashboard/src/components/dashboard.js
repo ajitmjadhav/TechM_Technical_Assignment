@@ -5,6 +5,7 @@ import sunSet from '../images/sunSetImage.jpg'
 import raintW from '../images/rainyWeather.jpg'
 import sunnyW from '../images/sunnyWeather.jpg'
 import coludyW from '../images/cloudyWeather.jpg'
+import { cityList } from './cityList.js'
 
 const Dashboard = () => {
     const [city, setCity] = useState('');
@@ -58,6 +59,11 @@ const Dashboard = () => {
                     <div className="custom-select" >
                         <select onChange={handleChange} className='nav-select' >
                             <option >select a city</option>
+                            {cityList.map((item, key) => {
+                                return (
+                                    <option key={key} value={item}>{item}</option>
+                                )
+                            })}
                             <option value="pune">pune</option>
                             <option value="Salvador">Salvador</option>
                             <option value="mumbai">mumbai</option>
