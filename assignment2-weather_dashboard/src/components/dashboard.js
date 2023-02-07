@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [currentObj, setCurrentObj] = useState([]);
     const [allObj, setAllObj] = useState([]);
     const [currentFlag, setCurrentFlag] = useState(false);
+    const [tempFlag, setTempFlag] = useState(false)
 
     //function for getting city name from select field
     const handleChange = (e) => {
@@ -60,6 +61,9 @@ const Dashboard = () => {
         if (allObj) {
             setCurrentObj([]);
         }
+    }
+    const tempConvert = () => {
+        setTempFlag(!tempFlag);
     }
     return (
         <>
@@ -119,8 +123,13 @@ const Dashboard = () => {
                                             </div>
                                             <p className='icon-text'>{myObj.description}</p>
                                         </div>
-                                        <div className='temp-wrapper'>
-                                            <h1 className='temperature'>{Math.floor(myObj.temp - 273)}<span>c</span></h1>
+                                        <div className='temp-wrapper' onClick={tempConvert}>
+                                            {tempFlag
+                                                ?
+                                                <h1 className='temperature'>{Math.floor(myObj.temp)}<span>k</span></h1>
+                                                :
+                                                <h1 className='temperature'>{Math.floor(myObj.temp - 273)}<span>c</span></h1>}
+
                                             <h2 className='feels'>Feels Like:{Math.floor(myObj.feelsLike - 273)}<span>c</span> </h2>
                                         </div>
                                     </div>
