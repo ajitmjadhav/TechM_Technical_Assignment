@@ -34,6 +34,70 @@ const Home = () => {
                         </button>
                     </div>
                 </div>
+                <div className='all-items'>
+                    <div className='item-grid'>
+                        <div className='item-card'>
+                            <div className='card-image'>
+                                <img src='https://images2.imgbox.com/cb/69/cQ29pV1x_o.jpeg' alt='random image from web' />
+                            </div>
+                            <div className='card-detail'>
+                                <h2 className='item-name'>Item Name</h2>
+                                <div>
+                                    <p className='item-cat'>Item Category</p>
+                                    <p className='item-company'>Item company</p>
+                                </div>
+                                <div className='item-desc'>Desc:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ante. Nunc euismod risus ut dui interdum ornare. Vestibulum porta ex enim, eget aliquet risus sollicitudin ac.</div>
+                                <h3 className='item-price'>200$</h3>
+                                <button className='add-to-cart'>Add to Cart</button>
+                            </div>
+                        </div>
+                        <div className='item-card'>
+                            <div className='card-image'>
+                                <img src='https://images2.imgbox.com/cb/69/cQ29pV1x_o.jpeg' alt='random image from web' />
+                            </div>
+                            <div className='card-detail'>
+                                <h2 className='item-name'>Item Name</h2>
+                                <div>
+                                    <p className='item-cat'>Item Category</p>
+                                    <p className='item-company'>Item company</p>
+                                </div>
+                                <div className='item-desc'>Desc:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ante. Nunc euismod risus ut dui interdum ornare. Vestibulum porta ex enim, eget aliquet risus sollicitudin ac.</div>
+                                <h3 className='item-price'>200$</h3>
+                                <button className='add-to-cart'>Add to Cart</button>
+                            </div>
+                        </div>
+                        <div className='item-card'>
+                            <div className='card-image'>
+                                <img src='https://images2.imgbox.com/cb/69/cQ29pV1x_o.jpeg' alt='random image from web' />
+                            </div>
+                            <div className='card-detail'>
+                                <h2 className='item-name'>Item Name</h2>
+                                <div>
+                                    <p className='item-cat'>Item Category</p>
+                                    <p className='item-company'>Item company</p>
+                                </div>
+                                <div className='item-desc'>Desc:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ante. Nunc euismod risus ut dui interdum ornare. Vestibulum porta ex enim, eget aliquet risus sollicitudin ac.</div>
+                                <h3 className='item-price'>200$</h3>
+                                <button className='add-to-cart'>Add to Cart</button>
+                            </div>
+                        </div>
+                        <div className='item-card'>
+                            <div className='card-image'>
+                                <img src='https://images2.imgbox.com/cb/69/cQ29pV1x_o.jpeg' alt='random image from web' />
+                            </div>
+                            <div className='card-detail'>
+                                <h2 className='item-name'>Item Name</h2>
+                                <div>
+                                    <p className='item-cat'>Item Category</p>
+                                    <p className='item-company'>Item company</p>
+                                </div>
+                                <div className='item-desc'>Desc:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ante. Nunc euismod risus ut dui interdum ornare. Vestibulum porta ex enim, eget aliquet risus sollicitudin ac.</div>
+                                <h3 className='item-price'>200$</h3>
+                                <button className='add-to-cart'>Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )
