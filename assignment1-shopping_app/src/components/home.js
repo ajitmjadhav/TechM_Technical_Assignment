@@ -1,39 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import './home.css'
-import { Outlet, Link } from "react-router-dom";
 
 const Home = () => {
     const [dataLoading, setDataLoading] = useState(true);
     const [isGridView, setIsGridView] = useState(true);
     const [allData, setAllData] = useState([]);
     const [cartItems, setCartItems] = useState([]);
-
-    const getWhetherReport = async () => {
+    //get data from API server
+    const getDataFromApi = async () => {
         const url = `https://course-api.com/react-store-products`;
         const response = await fetch(url);
         const res = await response.json();
         setAllData(res);
         console.log(res);
     }
+    //call method to retreve data from api
     useEffect(() => {
         const timer = setTimeout(() => {
-            getWhetherReport();
-        }, 2000);
+            getDataFromApi();
+        }, 1000);
         return () => clearTimeout(timer);
     }, []);
-
+    //toggle list and grid view
     const setListView = () => {
         setIsGridView(false);
     }
     const setGridView = () => {
         setIsGridView(true);
     }
+    //add to cart functionality
     const addToCart = (card) => {
         if (cartItems) {
             setCartItems([...cartItems, card])
         } else {
             setCartItems(card);
         }
+    }
+    //delete item from cart
+    const deleteCartItem = (id) => {
+        const cartTemp = cartItems.filter((cartItems) => cartItems.id !== id);
+        setCartItems(cartTemp);
     }
     return (
         <>
@@ -131,6 +137,10 @@ const Home = () => {
                                             <div>
                                                 <p className=''>Price:</p>
                                                 <h3 className='item-price'>{item.price}$</h3>
+                                            </div>
+                                            <div onClick={() => deleteCartItem(item.id)} className='delete-card-item'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                            </svg>
                                             </div>
                                         </div>
                                     )
