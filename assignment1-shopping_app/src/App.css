@@ -1,0 +1,39 @@
+/* reset css */
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  outline: none !important;
+}
+
+body {
+  line-height: 1.5;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+section,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+*:hover {
+  transition: all 0.3s;
+}
