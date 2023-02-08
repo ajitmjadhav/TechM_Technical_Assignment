@@ -39,6 +39,10 @@ const Dashboard = () => {
             toast.error('please select a city');
         }
     }
+
+    const reload = () => {
+        console.log(allObj);
+    }
     const saveAllData = () => {
         setCurrentFlag(false)
         const temp = allObj.find((obj) => obj.name === currentObj.name)
@@ -150,7 +154,6 @@ const Dashboard = () => {
                                 </div>
                             )
                         })}
-
                     </div>
                 </div>
                 <div className='dynamic-btn'>

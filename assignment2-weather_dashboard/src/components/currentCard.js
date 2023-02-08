@@ -5,8 +5,8 @@ import sunSet from '../images/sunSetImage.jpg'
 const CurrentCard = (prop) => {
     console.log(prop);
     const { id, coord, main, name, sys, weather } = prop.myData;
-    console.log(coord);
-    console.log(main);
+    // console.log(coord);
+    // console.log(main);
     const myObj = ({
         id: id,
         cityName: name,
