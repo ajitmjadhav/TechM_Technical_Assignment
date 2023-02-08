@@ -77,6 +77,7 @@
   display: grid;
   grid-template-columns: repeat(4, 250px);
   justify-content: space-between;
+  grid-gap: 20px;
 }
 .item-card {
   padding: 20px;
@@ -129,6 +130,29 @@
   text-overflow: ellipsis;
   max-height: 46px;
   line-height: 16px;
+}
+
+.list-view {
+  display: flex;
+  flex-direction: column;
+}
+.item-card-list {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+}
+.card-image-list {
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+}
+.card-detail-list {
+  width: 70%;
+}
+.card-image-list img {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
 }
 
 @media screen and (max-width: 1200px) {
