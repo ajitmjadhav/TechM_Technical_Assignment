@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './home.css'
+import { Outlet, Link } from "react-router-dom";
 
 const Home = () => {
     const [dataLoading, setDataLoading] = useState(true);
     const [isGridView, setIsGridView] = useState(true);
     const [allData, setAllData] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
 
     const getWhetherReport = async () => {
         const url = `https://course-api.com/react-store-products`;
@@ -25,6 +27,13 @@ const Home = () => {
     }
     const setGridView = () => {
         setIsGridView(true);
+    }
+    const addToCart = (card) => {
+        if (cartItems) {
+            setCartItems([...cartItems, card])
+        } else {
+            setCartItems(card);
+        }
     }
     return (
         <>
@@ -58,49 +67,81 @@ const Home = () => {
                         </button>
                     </div>
                 </div>
-                <div className='all-items'>
-                    <div className={isGridView ? 'item-grid' : 'list-view'} >
+                <div className='page-data'>
+                    <div className='all-items'>
+                        <div className={isGridView ? 'item-grid' : 'list-view'} >
 
-                        {allData && allData.map((item, index) => {
-                            {/* const [id, name, image, price, colors, company, description, category] = item; */ }
+                            {allData && allData.map((item, index) => {
+                                {/* const [id, name, image, price, colors, company, description, category] = item; */ }
 
-                            return (
-                                isGridView ?
-                                    <div className='item-card' key={item.id}>
-                                        <div className='card-image'>
-                                            <img src={item.image} alt='random image from web' />
-                                        </div>
-                                        <div className='card-detail'>
-                                            <h2 className='item-name'>{item.name}</h2>
-                                            <div>
-                                                <p className='item-cat'>{item.category}</p>
-                                                <p className='item-company'>{item.company}y</p>
+                                return (
+                                    isGridView ?
+                                        <div className='item-card' key={item.id}>
+                                            <div className='card-image'>
+                                                <img src={item.image} alt='random image from web' />
                                             </div>
-                                            <div className='item-desc'>Desc:{item.description}</div>
-                                            <h3 className='item-price'>{item.price}$</h3>
-                                            <button className='add-to-cart'>Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    :
-                                    <div className='item-card-list' key={item.id}>
-                                        <div className='card-image-list'>
-                                            <img src={item.image} alt='random image from web' />
-                                        </div>
-                                        <div className='card-detail-list'>
-                                            <h2 className='item-name'>{item.name}</h2>
-                                            <div>
-                                                <p className='item-cat'>{item.category}</p>
-                                                <p className='item-company'>{item.company}y</p>
+                                            <div className='card-detail'>
+                                                <h2 className='item-name'>{item.name}</h2>
+                                                <div>
+                                                    <p className='item-cat'>{item.category}</p>
+                                                    <p className='item-company'>{item.company}y</p>
+                                                </div>
+                                                <div className='item-desc'>Desc:{item.description}</div>
+                                                <h3 className='item-price'>{item.price}$</h3>
+                                                <button onClick={() => addToCart(item)} className='add-to-cart'>Add to Cart</button>
                                             </div>
-                                            <div className='item-desc'>Desc:{item.description}</div>
-                                            <h3 className='item-price'>{item.price}$</h3>
-                                            <button className='add-to-cart'>Add to Cart</button>
                                         </div>
-                                    </div>
-                            )
-                        })}
+                                        :
+                                        <div className='item-card-list' key={item.id}>
+                                            <div className='card-image-list'>
+                                                <img src={item.image} alt='random image from web' />
+                                            </div>
+                                            <div className='card-detail-list'>
+                                                <h2 className='item-name'>{item.name}</h2>
+                                                <div>
+                                                    <p className='item-cat'>{item.category}</p>
+                                                    <p className='item-company'>{item.company}y</p>
+                                                </div>
+                                                <div className='item-desc'>Desc:{item.description}</div>
+                                                <h3 className='item-price'>{item.price}$</h3>
+                                                <button onClick={() => addToCart(item)} className='add-to-cart'>Add to Cart</button>
+                                            </div>
+                                        </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className='cart-items'>
+                        <h1>Cart Items</h1>
+                        <div>
+                            {cartItems.length > 0 ?
+                                cartItems.map((item, key) => {
+                                    return (
+                                        <div className='cart-item'>
+                                            <div className='cart-item-image'>
+                                                <img src={item.image} />
+                                            </div>
+                                            <div className='cart-item-detail'>
+                                                <h2 className='item-name'>{item.name}</h2>
+                                                <div>
+                                                    <p className='item-cat'>{item.category}</p>
+                                                    <p className='item-company'>{item.company}y</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p className=''>Price:</p>
+                                                <h3 className='item-price'>{item.price}$</h3>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                :
+                                <div>empty cart</div>
+                            }
+                        </div>
                     </div>
                 </div>
+
             </div>
         </>
     )
