@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './home.css'
 
 const Home = () => {
+    const [dataLoading, setDataLoading] = useState(true);
+    const [allData, setAllData] = useState([]);
+
+    const getWhetherReport = async () => {
+        const url = `https://course-api.com/react-store-products`;
+        const response = await fetch(url);
+        const res = await response.json();
+        setAllData(res);
+        console.log(res);
+    }
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            getWhetherReport();
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, []);
     return (
         <>
             <div className='wmg-container'>
